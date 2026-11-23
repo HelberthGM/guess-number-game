@@ -27,3 +27,8 @@ where = ["src"]
 
 [tool.setuptools.package-data]
 juego_numero = ["templates/*.html", "static/*.css", "static/*.js"]
+
+[tool.pytest.ini_options]
+markers = [
+    "integration: prueba que requiere Docker",
+]

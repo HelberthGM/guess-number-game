@@ -18,7 +18,7 @@ Aplicación web para gestionar tareas personales.
 - [Licencia](#licencia)
 
 ## Tecnologías
-Python 3.12, Flask, SQLite, Docker, GitHub Actions.
+Python 3.12, Flask, Docker, GitHub Actions.
 
 ## Requisitos
 - Docker 27+ y Docker Compose
@@ -36,6 +36,17 @@ cp .env.example .env
 docker compose up -d --build
 # Abrir http://localhost:8000
 ```
+
+### Interfaz web
+
+```bash
+pip install -e .
+flask --app juego_numero.app run
+# Abrir http://127.0.0.1:5000
+```
+
+La interfaz permite configurar el rango numerico, enviar intentos, ver pistas,
+conocer el total de intentos y comenzar otra partida sin recargar la pagina.
 
 ## Pruebas
 ```bash

@@ -1,0 +1,51 @@
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Desafío: Adivina el número</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  </head>
+  <body>
+    <main class="game-card">
+      <h1>Desafío: Adivina el número</h1>
+      <p class="instructions">
+        ¿Tienes buena intuición? Define tu rango, inicia el desafío
+        y encuentra el número secreto antes de quedarte sin intentos.
+      </p>
+
+      <form id="range-form" class="range-form">
+        <label>Desde el número
+          <input id="minimo" name="minimo" type="number" value="{{ minimo }}" required>
+        </label>
+        <label>Hasta el número
+          <input id="maximo" name="maximo" type="number" value="{{ maximo }}" required>
+        </label>
+        <button type="submit">Iniciar desafío</button>
+      </form>
+
+      <form id="guess-form" class="guess-form">
+        <label for="numero">🎯 ¡Encuentra el número secreto!</label>
+        <p class="guess-instruction">
+          Escribe tu apuesta y descubre si debes buscar un número mayor o menor.
+        </p>
+
+        <div class="guess-row">
+          <input
+            id="numero"
+            name="numero"
+            type="number"
+            placeholder="¿Cuál es tu número?"
+            required
+          >
+          <button type="submit">¡Comprobar!</button>
+        </div>
+      </form>
+
+      <div id="message" class="message" role="status" aria-live="polite"></div>
+      <p id="attempts" class="attempts">Intentos utilizados: 0</p>
+    </main>
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
+  </body>
+</html>

@@ -1,5 +1,4 @@
-"""Permite ejecutar el juego con ``python -m juego_numero``."""
-
 from .consola import main
 
-raise SystemExit(main())
+if __name__ == "__main__":
+    main()

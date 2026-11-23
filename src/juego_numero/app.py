@@ -110,8 +110,9 @@ def create_app() -> Flask:
             return jsonify({"error": "Inicia una nueva partida."}), 400
         try:
             resultado = juego.adivinar(numero)
-        except (ValueError, RuntimeError) as error:
-            return jsonify({"error": str(error)}), 400
+        except (ValueError, RuntimeError):
+            app.logger.exception("Error al procesar intento en /adivinar")
+            return jsonify({"error": "No se pudo procesar el intento."}), 400
 
         _guardar_estado(juego)
         respuesta = {

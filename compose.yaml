@@ -1,0 +1,15 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: guess-number-game:1.2.0
+    ports:
+      - "${PORT:-8000}:${PORT:-8000}"
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      PORT: "${PORT:-8000}"
+      APP_VERSION: "${APP_VERSION:-1.2.0}"
+      APP_COMMIT: "${APP_COMMIT:-local}"

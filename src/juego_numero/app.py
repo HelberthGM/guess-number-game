@@ -1,3 +1,5 @@
+import os
+
 from flask import Flask, jsonify, render_template, request, session
 
 from .generadores import Aleatorio, Fijo
@@ -38,7 +40,20 @@ def _guardar_estado(juego: Juego) -> None:
 
 def create_app() -> Flask:
     app = Flask(__name__)
-    app.secret_key = "juego-numero-local"
+    app.secret_key = os.getenv("SECRET_KEY", "juego-numero-desarrollo")
+
+    @app.get("/health")
+    def health():
+        return jsonify({"status": "ok"}), 200
+
+    @app.get("/version")
+    def version():
+        return jsonify(
+            {
+                "version": os.getenv("APP_VERSION", "1.2.0"),
+                "commit": os.getenv("APP_COMMIT", "unknown"),
+            }
+        )
 
     @app.get("/")
     def index():
@@ -62,8 +77,8 @@ def create_app() -> Flask:
             max_intentos = int(datos.get("max_intentos", datos.get("intentos", 7)))
             juego = Juego(Aleatorio(), minimo, maximo, max_intentos)
             juego.nueva_partida()
-        except (TypeError, ValueError) as error:
-            return jsonify({"error": str(error)}), 400
+        except (TypeError, ValueError):
+            return jsonify({"error": "Parámetros inválidos."}), 400
 
         _guardar_estado(juego)
         return jsonify(
@@ -95,8 +110,9 @@ def create_app() -> Flask:
             return jsonify({"error": "Inicia una nueva partida."}), 400
         try:
             resultado = juego.adivinar(numero)
-        except (ValueError, RuntimeError) as error:
-            return jsonify({"error": str(error)}), 400
+        except (ValueError, RuntimeError):
+            app.logger.exception("Error al procesar intento en /adivinar")
+            return jsonify({"error": "No se pudo procesar el intento."}), 400
 
         _guardar_estado(juego)
         respuesta = {

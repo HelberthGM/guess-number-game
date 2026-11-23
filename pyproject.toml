@@ -10,6 +10,7 @@ requires-python = ">=3.10"
 license = "GPL-3.0-only"
 dependencies = [
     "Flask>=3.0",
+    "gunicorn==23.0.0",
 ]
 
 [project.optional-dependencies]
@@ -23,3 +24,6 @@ juego-numero = "juego_numero.consola:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
+[tool.setuptools.package-data]
+juego_numero = ["templates/*.html", "static/*.css", "static/*.js"]

@@ -1,10 +1,10 @@
-# Gestor de Tareas
+# Juego de Adivinar el Número
 
 ![CI](https://github.com/HelberthGM/gestor-tareas/actions/workflows/ci.yml/badge.svg)
 ![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=<project-key>&metric=alert_status)
 ![License](https://img.shields.io/github/license/HelberthGM/gestor-tareas)
 
-Aplicación web para gestionar tareas personales.
+Juego de adivinar un número con interfaz web y consola.
 
 ## Tabla de contenido
 - [Tecnologías](#tecnologías)
@@ -31,6 +31,26 @@ cd gestor-tareas
 cp .env.example .env
 ```
 
+### Entorno virtual
+
+Crear y activar el entorno virtual antes de instalar las dependencias:
+
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install --upgrade pip
+pip install -e ".[dev]"
+```
+
+En Windows PowerShell, activa el entorno con:
+
+```powershell
+python -m venv .venv
+.venv\Scripts\Activate.ps1
+python -m pip install --upgrade pip
+pip install -e ".[dev]"
+```
+
 ## Uso con Docker
 ```bash
 docker compose up -d --build
@@ -47,6 +67,27 @@ flask --app juego_numero.app run
 
 La interfaz permite configurar el rango numerico, enviar intentos, ver pistas,
 conocer el total de intentos y comenzar otra partida sin recargar la pagina.
+
+### Consola
+
+La funcionalidad de consola se mantiene disponible después de instalar el proyecto:
+
+```bash
+pip install -e .
+juego-numero
+```
+
+También puedes ejecutar la consola directamente:
+
+```bash
+python -m juego_numero
+```
+
+Opciones disponibles:
+
+```bash
+juego-numero --minimo 1 --maximo 50 --intentos 5
+```
 
 ## Pruebas
 ```bash

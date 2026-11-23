@@ -77,8 +77,8 @@ def create_app() -> Flask:
             max_intentos = int(datos.get("max_intentos", datos.get("intentos", 7)))
             juego = Juego(Aleatorio(), minimo, maximo, max_intentos)
             juego.nueva_partida()
-        except (TypeError, ValueError) as error:
-            return jsonify({"error": str(error)}), 400
+        except (TypeError, ValueError):
+            return jsonify({"error": "Parámetros inválidos."}), 400
 
         _guardar_estado(juego)
         return jsonify(

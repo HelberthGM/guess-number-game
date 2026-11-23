@@ -10,6 +10,19 @@ def test_muestra_la_interfaz() -> None:
     assert b"Iniciar desaf\xc3\xado" in respuesta.data
 
 
+def test_health_y_version() -> None:
+    client = create_app().test_client()
+
+    health = client.get("/health")
+    version = client.get("/version")
+
+    assert health.status_code == 200
+    assert health.get_json()["status"] == "ok"
+    assert version.status_code == 200
+    assert "version" in version.get_json()
+    assert "commit" in version.get_json()
+
+
 def test_nueva_partida_y_validacion() -> None:
     client = create_app().test_client()
 

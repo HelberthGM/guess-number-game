@@ -37,6 +37,33 @@ docker compose up -d --build
 # Abrir http://localhost:8000
 ```
 
+### Docker local
+
+Copia las variables de ejemplo y arranca la aplicación construida localmente:
+
+```bash
+cp .env.example .env
+docker compose up --build
+```
+
+La aplicación escucha en `0.0.0.0`, usa `PORT` y expone:
+
+- `GET /health`: estado de la aplicación.
+- `GET /version`: versión y commit.
+
+Para producción con una imagen publicada en GHCR:
+
+```bash
+IMAGE=ghcr.io/tu-usuario/gestor-tareas \
+TAG=1.2.0 \
+SECRET_KEY="clave-segura" \
+APP_COMMIT="$(git rev-parse HEAD)" \
+docker compose -f compose.prod.yaml up -d
+```
+
+`compose.prod.yaml` no construye imágenes: usa `IMAGE` y `TAG` proporcionados por
+el pipeline. Nunca escribas secretos en el Dockerfile, Compose ni `.env` de Git.
+
 ### Interfaz web
 
 ```bash

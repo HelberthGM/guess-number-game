@@ -1,3 +1,5 @@
+import os
+
 from flask import Flask, jsonify, render_template, request, session
 
 from .generadores import Aleatorio, Fijo
@@ -38,7 +40,20 @@ def _guardar_estado(juego: Juego) -> None:
 
 def create_app() -> Flask:
     app = Flask(__name__)
-    app.secret_key = "juego-numero-local"
+    app.secret_key = os.getenv("SECRET_KEY", "juego-numero-desarrollo")
+
+    @app.get("/health")
+    def health():
+        return jsonify({"status": "ok"}), 200
+
+    @app.get("/version")
+    def version():
+        return jsonify(
+            {
+                "version": os.getenv("APP_VERSION", "1.2.0"),
+                "commit": os.getenv("APP_COMMIT", "unknown"),
+            }
+        )
 
     @app.get("/")
     def index():

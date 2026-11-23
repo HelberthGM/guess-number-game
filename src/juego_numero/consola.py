@@ -9,7 +9,10 @@ from collections.abc import Sequence
 from .generadores import Aleatorio
 from .juego import Juego, Resultado
 
-
+PISTAS = {
+    Resultado.MAYOR: "El numero secreto es mayor.",
+    Resultado.MENOR: "El numero secreto es menor.",
+}
 
 
 def construir_parser() -> argparse.ArgumentParser:

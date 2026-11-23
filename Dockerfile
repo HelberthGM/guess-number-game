@@ -15,9 +15,14 @@ RUN python -m pip install --upgrade pip \
 
 FROM python:3.12-slim AS runtime
 
+ARG APP_VERSION=1.2.0
+ARG APP_COMMIT=unknown
+
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
-    PORT=8000
+    PORT=8000 \
+    APP_VERSION=${APP_VERSION} \
+    APP_COMMIT=${APP_COMMIT}
 
 WORKDIR /app
 

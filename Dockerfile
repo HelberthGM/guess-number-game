@@ -15,7 +15,7 @@ RUN python -m pip install --upgrade pip \
 
 FROM python:3.12-slim AS runtime
 
-ARG APP_VERSION=1.0.0
+ARG APP_VERSION=1.0.1
 ARG APP_COMMIT=unknown
 
 ENV PYTHONDONTWRITEBYTECODE=1 \

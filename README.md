@@ -126,6 +126,9 @@ pytest -m integration -v
 
 # Todas las pruebas
 pytest
+
+# Ejecutar pruebas con informe de cobertura
+pytest -m "not integration" --cov=src/juego_numero --cov-report=term-missing --cov-report=xml:coverage.xml
 ```
 
 La integración Docker construye el contenedor, levanta la aplicación en el puerto

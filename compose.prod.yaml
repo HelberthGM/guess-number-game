@@ -1,13 +1,13 @@
 services:
   app:
-    image: "${IMAGE:-ghcr.io/helberthgm/gestor-tareas}:${TAG:-1.2.0}"
+    image: "${IMAGE:-ghcr.io/helberthgm/gestor-tareas}:${TAG:-1.0.0}"
     restart: unless-stopped
     ports:
       - "${PORT:-8000}:${PORT:-8000}"
     environment:
       PORT: "${PORT:-8000}"
       SECRET_KEY: "${SECRET_KEY:?SECRET_KEY es obligatoria}"
-      APP_VERSION: "${TAG:-1.2.0}"
+      APP_VERSION: "${TAG:-1.0.0}"
       APP_COMMIT: "${APP_COMMIT:-unknown}"
     healthcheck:
       test:

@@ -2,7 +2,7 @@ from juego_numero.app import create_app
 
 
 def test_muestra_la_interfaz() -> None:
-    client = create_app().test_client()
+    client = create_app(testing=True).test_client()
     respuesta = client.get("/")
 
     assert respuesta.status_code == 200
@@ -11,7 +11,7 @@ def test_muestra_la_interfaz() -> None:
 
 
 def test_health_y_version() -> None:
-    client = create_app().test_client()
+    client = create_app(testing=True).test_client()
 
     health = client.get("/health")
     version = client.get("/version")
@@ -36,7 +36,7 @@ def test_version_devuelve_commit_corto(monkeypatch) -> None:
 
 
 def test_nueva_partida_y_validacion() -> None:
-    client = create_app().test_client()
+    client = create_app(testing=True).test_client()
 
     nueva = client.post("/api/nueva", json={"minimo": 10, "maximo": 20})
     assert nueva.status_code == 200
@@ -47,7 +47,7 @@ def test_nueva_partida_y_validacion() -> None:
 
 
 def test_numero_invalido_no_gasta_intento() -> None:
-    client = create_app().test_client()
+    client = create_app(testing=True).test_client()
     client.post("/api/nueva", json={"minimo": 1, "maximo": 100})
 
     respuesta = client.post("/api/adivinar", json={"numero": "texto"})
@@ -56,7 +56,7 @@ def test_numero_invalido_no_gasta_intento() -> None:
 
 
 def test_reiniciar_permite_seguir_jugando() -> None:
-    client = create_app().test_client()
+    client = create_app(testing=True).test_client()
     client.post("/api/nueva", json={"minimo": 1, "maximo": 10})
 
     with client.session_transaction() as session:

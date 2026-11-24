@@ -1,7 +1,8 @@
 # Juego de Adivinar el Número
 
 ![CI](https://github.com/HelberthGM/gestor-tareas/actions/workflows/ci.yml/badge.svg)
-![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=<project-key>&metric=alert_status)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=HelberthGM_guess-number-game&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=HelberthGM_guess-number-game)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=HelberthGM_guess-number-game&metric=coverage)](https://sonarcloud.io/summary/new_code?id=HelberthGM_guess-number-game)
 ![License](https://img.shields.io/github/license/HelberthGM/gestor-tareas)
 
 Juego web y de consola para adivinar un número secreto.
@@ -75,7 +76,7 @@ Para producción con una imagen publicada en GHCR:
 
 ```bash
 IMAGE=ghcr.io/tu-usuario/gestor-tareas \
-TAG=1.0.0 \
+TAG=1.0.1 \
 SECRET_KEY="clave-segura" \
 APP_COMMIT="$(git rev-parse HEAD)" \
 docker compose -f compose.prod.yaml up -d
@@ -105,7 +106,7 @@ en el entorno del servicio con el commit desplegado.
 ```bash
 pip install -e .
 flask --app juego_numero.app run
-# Abrir http://127.0.0.1:5000
+# Abrir http://127.0.0.0:5000
 ```
 
 La interfaz permite configurar el rango numerico, enviar intentos, ver pistas,

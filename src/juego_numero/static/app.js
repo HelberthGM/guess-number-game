@@ -13,7 +13,10 @@ function mostrarMensaje(texto, tipo = "") {
 async function pedir(url, datos) {
   const respuesta = await fetch(url, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: {
+      "Content-Type": "application/json",
+      "X-CSRFToken": document.querySelector('meta[name="csrf-token"]').content,
+    },
     body: JSON.stringify(datos),
   });
   const cuerpo = await respuesta.json();

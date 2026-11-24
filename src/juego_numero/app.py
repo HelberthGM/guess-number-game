@@ -1,6 +1,7 @@
 import os
 
 from flask import Flask, jsonify, render_template, request, session
+from flask_wtf.csrf import CSRFProtect, generate_csrf
 
 from .generadores import Aleatorio, Fijo
 from .juego import Juego, Resultado
@@ -38,9 +39,16 @@ def _guardar_estado(juego: Juego) -> None:
         session["objetivo"] = juego._objetivo
 
 
-def create_app() -> Flask:
+def create_app(testing: bool = False) -> Flask:
     app = Flask(__name__)
     app.secret_key = os.getenv("SECRET_KEY", "juego-numero-desarrollo")
+    app.config["WTF_CSRF_ENABLED"] = not testing
+    csrf = CSRFProtect()
+    csrf.init_app(app)
+
+    @app.context_processor
+    def variables_globales():
+        return {"csrf_token": generate_csrf}
 
     @app.get("/health")
     def health():
@@ -102,6 +110,7 @@ def create_app() -> Flask:
     @app.post("/api/adivinar")
     @app.post("/adivinar")
     def adivinar():
+        
         datos = datos_json()
         valor = datos.get("numero", datos.get("intento"))
         if valor in (None, ""):

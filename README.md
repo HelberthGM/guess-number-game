@@ -1,7 +1,8 @@
 # Juego de Adivinar el Número
 
 ![CI](https://github.com/HelberthGM/gestor-tareas/actions/workflows/ci.yml/badge.svg)
-![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=<project-key>&metric=alert_status)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=HelberthGM_guess-number-game&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=HelberthGM_guess-number-game)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=HelberthGM_guess-number-game&metric=coverage)](https://sonarcloud.io/summary/new_code?id=HelberthGM_guess-number-game)
 ![License](https://img.shields.io/github/license/HelberthGM/gestor-tareas)
 
 Juego web y de consola para adivinar un número secreto.

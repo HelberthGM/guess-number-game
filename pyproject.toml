@@ -4,12 +4,13 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "juego-numero"
-version = "0.1.0"
+version = "1.0.1"
 description = "Juego web de adivinar el numero"
 requires-python = ">=3.10"
 license = "GPL-3.0-only"
 dependencies = [
     "Flask>=3.0",
+    "Flask-WTF>=1.2",
     "gunicorn==23.0.0",
 ]
 

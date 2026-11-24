@@ -75,7 +75,7 @@ Para producción con una imagen publicada en GHCR:
 
 ```bash
 IMAGE=ghcr.io/tu-usuario/gestor-tareas \
-TAG=1.2.0 \
+TAG=1.0.1 \
 SECRET_KEY="clave-segura" \
 APP_COMMIT="$(git rev-parse HEAD)" \
 docker compose -f compose.prod.yaml up -d
@@ -89,7 +89,7 @@ el pipeline. Nunca escribas secretos en el Dockerfile, Compose ni `.env` de Git.
 ```bash
 pip install -e .
 flask --app juego_numero.app run
-# Abrir http://127.0.0.1:5000
+# Abrir http://127.0.0.0:5000
 ```
 
 La interfaz permite configurar el rango numerico, enviar intentos, ver pistas,

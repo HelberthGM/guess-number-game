@@ -46,7 +46,7 @@ def test_compose_sirve_la_aplicacion() -> None:
         pytest.skip("Docker Compose no está disponible")
 
     puerto = "18081"
-    entorno = {"PORT": puerto, "APP_VERSION": "1.2.0", "APP_COMMIT": "integration"}
+    entorno = {"PORT": puerto, "APP_VERSION": "1.0.0", "APP_COMMIT": "integration"}
 
     ejecutar(
         "docker",
@@ -75,7 +75,7 @@ def test_compose_sirve_la_aplicacion() -> None:
             assert b"Adivina el" in respuesta.read()
 
         version = obtener(f"{base_url}/version")
-        assert version["version"] == "1.2.0"
+        assert version["version"] == "1.0.0"
         assert version["commit"] == "integration"
 
         estado, nueva = solicitar(

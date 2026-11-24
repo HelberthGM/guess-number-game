@@ -50,7 +50,7 @@ def create_app() -> Flask:
     def version():
         return jsonify(
             {
-                "version": os.getenv("APP_VERSION", "1.2.0"),
+                "version": os.getenv("APP_VERSION", "1.0.0"),
                 "commit": os.getenv("APP_COMMIT", "unknown"),
             }
         )

@@ -76,7 +76,7 @@ def test_compose_sirve_la_aplicacion() -> None:
 
         version = obtener(f"{base_url}/version")
         assert version["version"] == "1.0.0"
-        assert version["commit"] == "integration"
+        assert version["commit"] == "integra"
 
         estado, nueva = solicitar(
             f"{base_url}/api/nueva",

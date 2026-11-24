@@ -23,7 +23,7 @@ jobs:
 
   publish:
     needs: test
-    if: startsWith(github.ref, 'refs/tags/v')
+    if: github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v')
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -44,12 +44,22 @@ jobs:
             type=semver,pattern={{version}}
             type=raw,value=latest
       - id: version
-        run: echo "value=${GITHUB_REF_NAME#v}" >> "$GITHUB_OUTPUT"
+        run: |
+          if [[ "${GITHUB_REF_TYPE}" == "tag" ]]; then
+            echo "value=${GITHUB_REF_NAME#v}" >> "$GITHUB_OUTPUT"
+          else
+            echo "value=main" >> "$GITHUB_OUTPUT"
+          fi
+      - id: image
+        run: |
+          echo "name=ghcr.io/${GITHUB_REPOSITORY,,}:${GITHUB_SHA}" >> "$GITHUB_OUTPUT"
       - uses: docker/build-push-action@v6
         with:
           context: .
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
+          tags: |
+            ${{ steps.meta.outputs.tags }}
+            ${{ steps.image.outputs.name }}
           labels: ${{ steps.meta.outputs.labels }}
           build-args: |
             APP_VERSION=${{ steps.version.outputs.value }}
@@ -58,7 +68,7 @@ jobs:
           cache-to: type=gha,mode=max
 
   render:
-    needs: test
+    needs: publish
     if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     environment:
@@ -70,8 +80,15 @@ jobs:
           HOOK: ${{ secrets.RENDER_DEPLOY_HOOK }}
         run: |
           test -n "${HOOK}" || { echo "Falta el secreto RENDER_DEPLOY_HOOK"; exit 1; }
-          curl -fsS -X POST "${HOOK}&ref=${GITHUB_SHA}" >/dev/null
-          echo "Despliegue solicitado para el commit ${GITHUB_SHA::7}"
+          IMG="ghcr.io/${GITHUB_REPOSITORY,,}:${GITHUB_SHA}"
+          ENC=$(jq -rn --arg v "${IMG}" '$v|@uri')
+          if [[ "${HOOK}" == *"?"* ]]; then
+            SEP="&"
+          else
+            SEP="?"
+          fi
+          curl -fsS -X POST "${HOOK}${SEP}imgURL=${ENC}" >/dev/null
+          echo "Despliegue solicitado: ${IMG}"
 
       - name: Smoke test
         env:

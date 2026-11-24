@@ -62,9 +62,12 @@ def create_app(testing: bool = False) -> Flask:
             or os.getenv("SOURCE_COMMIT")
             or "unknown"
         )
+        version = os.getenv("APP_VERSION")
+        if version in (None, "", "main", "latest", "unknown"):
+            version = "1.0.1"
         return jsonify(
             {
-                "version": os.getenv("APP_VERSION", "1.0.0"),
+                "version": version,
                 "commit": commit[:7],
             }
         )

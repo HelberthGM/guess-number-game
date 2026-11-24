@@ -4,7 +4,7 @@
 ![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=<project-key>&metric=alert_status)
 ![License](https://img.shields.io/github/license/HelberthGM/gestor-tareas)
 
-Juego de adivinar un número con interfaz web y consola.
+Juego web y de consola para adivinar un número secreto.
 
 ## Tabla de contenido
 - [Tecnologías](#tecnologías)
@@ -118,8 +118,19 @@ juego-numero --minimo 1 --maximo 50 --intentos 5
 
 ## Pruebas
 ```bash
-pytest --cov
+# Todas las pruebas unitarias y web
+pytest -m "not integration"
+
+# Prueba de integración con Docker Compose
+pytest -m integration -v
+
+# Todas las pruebas
+pytest
 ```
+
+La integración Docker construye el contenedor, levanta la aplicación en el puerto
+`18081`, valida `/`, `/health`, `/version` y una operación de juego. Al finalizar,
+Compose detiene y elimina sus recursos. Requiere Docker con Compose disponible.
 
 ## Flujo de ramas
 `feature/*` → `develop` → `test` → `main`. Hotfix: `hotfix/*` → `main` y `develop`.
@@ -150,7 +161,11 @@ gitGraph
     merge hotfix/1.0.1 id: "PR #6"
 ```
 ## CI/CD
-Describe cada workflow: qué lo dispara y qué hace.
+
+- `ci.yml` ejecuta lint y pruebas unitarias/web en Python 3.10, 3.12 y 3.13.
+- `ci.yml` también ejecuta la prueba de integración con Docker Compose.
+- `docker.yaml` prueba y publica la imagen en GHCR cuando se crea un tag `v*`.
+- Las imágenes reciben además el tag `latest` y el tag semántico correspondiente.
 
 ## Despliegues
 - Producción (Render): https://<app>.onrender.com

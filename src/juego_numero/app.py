@@ -110,7 +110,12 @@ def create_app() -> Flask:
             return jsonify({"error": "Inicia una nueva partida."}), 400
         try:
             resultado = juego.adivinar(numero)
-        except (ValueError, RuntimeError):
+        except ValueError:
+            app.logger.info("Intento inválido en /adivinar")
+            return jsonify(
+                {"error": f"El numero debe estar entre {juego.minimo} y {juego.maximo}"}
+            ), 400
+        except RuntimeError:
             app.logger.exception("Error al procesar intento en /adivinar")
             return jsonify({"error": "No se pudo procesar el intento."}), 400
 

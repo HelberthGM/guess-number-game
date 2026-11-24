@@ -63,7 +63,7 @@ def test_compose_sirve_la_aplicacion() -> None:
             try:
                 salud = obtener(f"{base_url}/health")
                 break
-            except (URLError, TimeoutError):
+            except (URLError, TimeoutError, ConnectionResetError):
                 time.sleep(1)
         else:
             pytest.fail("La aplicación no respondió en /health")

@@ -184,11 +184,11 @@ gitGraph
 
 - `ci.yml` ejecuta lint y pruebas unitarias/web en Python 3.10, 3.12 y 3.13.
 - `ci.yml` también ejecuta la prueba de integración con Docker Compose.
-- `docker.yaml` prueba y publica la imagen en GHCR cuando se crea un tag `v*`.
-- Las imágenes reciben además el tag `latest` y el tag semántico correspondiente.
+- `docker.yaml` prueba y publica la imagen en GHCR al actualizar `main` o crear un tag `v*`.
+- Las imágenes reciben los tags `latest`, SHA y, para releases, el tag semántico correspondiente.
 
 ## Despliegues
-- Producción (Render): https://<app>.onrender.com
+- Producción (Render): https://guess-number-game-latest.onrender.com
 - Servidor propio: http://localhost:8000 (actualizado automáticamente desde `main`)
 
 ## Autor

@@ -23,6 +23,18 @@ def test_health_y_version() -> None:
     assert "commit" in version.get_json()
 
 
+def test_version_devuelve_commit_corto(monkeypatch) -> None:
+    monkeypatch.setenv(
+        "APP_COMMIT",
+        "1234567890abcdef",
+    )
+    client = create_app().test_client()
+
+    version = client.get("/version")
+
+    assert version.get_json()["commit"] == "1234567"
+
+
 def test_nueva_partida_y_validacion() -> None:
     client = create_app(testing=True).test_client()
 

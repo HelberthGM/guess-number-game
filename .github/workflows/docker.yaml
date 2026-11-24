@@ -6,6 +6,9 @@ on:
     tags: ["v*"]
   pull_request:
 
+permissions:
+  contents: read
+
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -53,3 +56,41 @@ jobs:
             APP_COMMIT=${{ github.sha }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
+  render:
+    needs: test
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment:
+      name: production-render
+      url: ${{ vars.RENDER_URL }}
+    steps:
+      - name: Disparar despliegue en Render
+        env:
+          HOOK: ${{ secrets.RENDER_DEPLOY_HOOK }}
+        run: |
+          test -n "${HOOK}" || { echo "Falta el secreto RENDER_DEPLOY_HOOK"; exit 1; }
+          curl -fsS -X POST "${HOOK}&ref=${GITHUB_SHA}" >/dev/null
+          echo "Despliegue solicitado para el commit ${GITHUB_SHA::7}"
+
+      - name: Smoke test
+        env:
+          URL: ${{ vars.RENDER_URL }}
+        run: |
+          test -n "${URL}" || { echo "Falta la variable RENDER_URL"; exit 1; }
+          for intento in $(seq 1 40); do
+            version=$(
+              curl -fsS --max-time 60 "${URL%/}/version" |
+              grep -o '"commit": *"[^"]*"' |
+              cut -d'"' -f4 ||
+              true
+            )
+            if [ "${version}" = "${GITHUB_SHA::7}" ]; then
+              echo "Render sirve la version ${version}"
+              exit 0
+            fi
+            echo "Intento ${intento}: version actual '${version:-sin respuesta}', esperando..."
+            sleep 15
+          done
+          echo "La nueva version no respondio a tiempo"
+          exit 1

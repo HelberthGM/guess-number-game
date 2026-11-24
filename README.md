@@ -85,6 +85,22 @@ docker compose -f compose.prod.yaml up -d
 `compose.prod.yaml` no construye imágenes: usa `IMAGE` y `TAG` proporcionados por
 el pipeline. Nunca escribas secretos en el Dockerfile, Compose ni `.env` de Git.
 
+### Despliegue continuo en Render
+
+En GitHub, crea el environment `production-render` y configura:
+
+- **Variable:** `RENDER_URL`, con la URL pública sin barra final.
+- **Secreto:** `RENDER_DEPLOY_HOOK`, con el Deploy Hook de Render.
+
+El job `render` se ejecuta únicamente al hacer push directo o fusionar un PR en
+`main`. Primero dispara el hook y luego consulta `/version` hasta confirmar que
+`commit` corresponde al SHA corto del despliegue.
+
+En Render, activa Deploy Hook y configura `APP_COMMIT=RENDER_GIT_COMMIT` si tu
+servicio permite variables dinámicas. Si Render no expone una variable dinámica
+de commit, cambia el smoke test para validar `/health` o configura `APP_COMMIT`
+en el entorno del servicio con el commit desplegado.
+
 ### Interfaz web
 
 ```bash
